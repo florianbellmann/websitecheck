@@ -1,0 +1,26 @@
+{
+  "name": "websitecheck",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/florianjuesten/websitecheck.git"
+  },
+  "keywords": [],
+  "author": "Florian Jüsten",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/florianjuesten/websitecheck/issues"
+  },
+  "homepage": "https://github.com/florianjuesten/websitecheck#readme",
+  "dependencies": {
+    "date-and-time": "^0.14.2",
+    "dotenv": "^8.2.0",
+    "puppeteer": "^5.5.0"
+  }
+}

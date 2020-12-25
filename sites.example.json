@@ -1,0 +1,12 @@
+{
+    "sites": [
+        {
+            "name": "Google",
+            "url": "https://www.google.com/"
+        },
+        {
+            "name": "Puppeteer",
+            "url": "https://github.com/puppeteer/puppeteer"
+        }
+    ]
+}

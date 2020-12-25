@@ -1,0 +1,3 @@
+[submodule "imgdiff"]
+	path = imgdiff
+	url = https://github.com/n7olkachev/imgdiff
