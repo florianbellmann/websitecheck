@@ -8,6 +8,7 @@ const { exec } = require("child_process");
 
 dotenv.config();
 const pixelThreshold = process.env.PIXEL_THRESHOLD || 1000
+const resultLocation = process.env.RESULT_LOCATION || "results"
 
 process.setMaxListeners(0)
 
@@ -40,13 +41,13 @@ function getValidDates(today) {
 }
 
 function cleanUpOldResults(today) {
-  const resultDirectories = fs.readdirSync(path.join("results"))
+  const resultDirectories = fs.readdirSync(path.join(resultLocation))
 
   resultDirectories.forEach(element => {
     if (validDates.indexOf(element) < 0) {
       try {
         nodeLog("Removing: " + element)
-        fs.rmdirSync(path.join("results", element), { recursive: true })
+        fs.rmdirSync(path.join(resultLocation, element), { recursive: true })
       } catch (error) {
         console.error(error)
       }
@@ -57,7 +58,7 @@ function cleanUpOldResults(today) {
 function prepareResults() {
   nodeLog("Preparing results.")
   const dateString = getDateString(today)
-  const resultDir = path.join("results", dateString)
+  const resultDir = path.join(resultLocation, dateString)
 
   if (!fs.existsSync(resultDir)) {
     fs.mkdirSync(resultDir);
@@ -108,7 +109,10 @@ async function getPixelDifference(siteName, dateString1, dateString2) {
     var pixelDifference = -1
     const executable = process.platform === "darwin" ? "imgdiff-darwin-amd64" : "imgdiff-linux-386"
 
-    exec("./imgdiff/" + executable + " ./results/" + dateString1 + "/" + siteName + ".png ./results/" + dateString2 + "/" + siteName + ".png", (error, stdout, stderr) => {
+    const image1 = path.join(resultLocation, dateString1, siteName + ".png")
+    const image2 = path.join(resultLocation, dateString2, siteName + ".png")
+
+    exec("./imgdiff/" + executable + " " + image1 + " " + image2, (error, stdout, stderr) => {
       if (error) {
         try {
           // wtf
@@ -116,10 +120,10 @@ async function getPixelDifference(siteName, dateString1, dateString2) {
           pixelDifference = pixels
           resolve(pixelDifference)
         } catch (error) {
-          if(stderr.indexOf("no such file") > 0){
+          if (stderr.indexOf("no such file") > 0) {
             nodeLog("There was no file to compare for " + siteName)
           }
-          else{
+          else {
             console.error("Could not parse pixel difference.", error)
           }
           resolve(pixelDifference)
@@ -146,9 +150,7 @@ async function snapSites(sites, resultDir) {
   nodeLog("Starting to query sites")
   sites.forEach(async (site) => {
     nodeLog("Querying: " + site.name);
-    const browser = await puppeteer.launch(
-      // executablePath: "chromium-browser",
-    );
+    const browser = process.platform !== "darwin" ? await puppeteer.launch({ executablePath: "chromium-browser" }) : await puppeteer.launch();
 
     const page = await browser.newPage();
     await page.goto(site.url);
@@ -167,7 +169,7 @@ const validDates = getValidDates(today);
   // nodeLog(sites);
 
   const resultDir = prepareResults()
-  if (!fs.existsSync(path.join("results", getDateString(dateHelper.getDayBefore(today))))) {
+  if (!fs.existsSync(path.join(resultLocation, getDateString(dateHelper.getDayBefore(today))))) {
     nodeLog("No results from yesterday. Nothing to compare.")
   }
   else {
