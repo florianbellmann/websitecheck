@@ -169,14 +169,15 @@ const validDates = getValidDates(today);
   // nodeLog(sites);
 
   const resultDir = prepareResults()
+    await snapSites(sites, resultDir)
   if (!fs.existsSync(path.join(resultLocation, getDateString(dateHelper.getDayBefore(today))))) {
     nodeLog("No results from yesterday. Nothing to compare.")
   }
   else {
-    await snapSites(sites, resultDir)
 
     const results = await compareImages(sites)
 
     handleResults(results)
   }
+    return 
 })();
