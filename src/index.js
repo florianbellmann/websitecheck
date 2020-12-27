@@ -112,19 +112,21 @@ async function getPixelDifference(siteName, dateString1, dateString2) {
     const image1 = path.join(resultLocation, dateString1, siteName + ".png")
     const image2 = path.join(resultLocation, dateString2, siteName + ".png")
 
-    exec("./imgdiff/" + executable + " " + image1 + " " + image2, (error, stdout, stderr) => {
-      if (error) {
+      const fullCommand ="./imgdiff/" + executable + " " + image1 + " " + image2
+          nodeLog(fullCommand)
+    exec( fullCommand,(outerError, stdout, stderr) => {
+      if (outerError) {
         try {
           // wtf
           const pixels = parseInt(stdout.split("Different pixels:")[1].replace("[1;31m", "").toString().replace("", "").split("[")[0].replace("", "").replace("", "").trim().trim() + "")
           pixelDifference = pixels
           resolve(pixelDifference)
-        } catch (error) {
+        } catch (innerError) {
           if (stderr.indexOf("no such file") > 0) {
             nodeLog("There was no file to compare for " + siteName)
           }
           else {
-            console.error("Could not parse pixel difference.", error)
+            console.error("Could not parse pixel difference.", stdout, innerError, outerError)
           }
           resolve(pixelDifference)
           return;
