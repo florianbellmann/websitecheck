@@ -5,4 +5,6 @@ git submodule update
 
 sed 's/platforms\=\(.*\)/platforms\=\(\"linux\/386\"\)/' -i imgdiff/scripts/build.sh 
 
-./imgdiff/scripts/build.sh
+cd imgdiff
+./scripts/build.sh
+cd ..
