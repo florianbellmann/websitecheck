@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-const puppeteer = require("puppeteer");
+const playwright = require("playwright");
 const fs = require("fs");
 const path = require("path")
 const date = require("date-and-time")
@@ -150,7 +150,9 @@ async function snapSites(sites, resultDir) {
   nodeLog("Starting to query sites")
   sites.forEach(async (site) => {
     nodeLog("Querying: " + site.name);
-    const browser = process.platform !== "darwin" ? await puppeteer.launch({ executablePath: "chromium-browser" }) : await puppeteer.launch();
+    // const browser = process.platform !== "darwin" ? await playwright.launch({ executablePath: "chromium-browser" }) : await playwright.launch();
+    const browser = await playwright["chromium"].launch();
+
 
     const page = await browser.newPage();
     await page.goto(site.url);

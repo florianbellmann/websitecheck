@@ -21,6 +21,6 @@
   "dependencies": {
     "date-and-time": "^0.14.2",
     "dotenv": "^8.2.0",
-    "puppeteer": "^5.5.0"
+    "playwright": "^1.13.1"
   }
 }
