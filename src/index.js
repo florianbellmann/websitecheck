@@ -187,10 +187,20 @@ async function getPixelDifference(siteName, dateString1, dateString2) {
   });
 }
 
-function handleResults(results) {
+function handleResults(results,sites) {
   nodeLog("Handling results.");
   nodeLog("Changes on: " + results);
   nodeLog(results.length);
+
+  results.forEach(res =>{
+// if(sites.map(s=>s.name).indexOf(res)> -1)
+    // console.log(sites.find(s=>s.name === res).url)
+    const site = sites.find(s=>s.name === res)
+
+    if(site != null){
+      exec(`open ${site.url}`);
+    }
+  })
 }
 
 async function snapSites(sites, resultDir) {
@@ -227,7 +237,7 @@ const validDates = getValidDates(today);
   } else {
     const results = await compareImages(sites);
 
-    handleResults(results);
+    handleResults(results,sites);
   }
   return;
 })();
