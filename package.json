@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/florianjuesten/websitecheck.git"
+    "url": "git+https://github.com/florianbellmann/websitecheck.git"
   },
   "keywords": [],
   "author": "Florian Jüsten",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/florianjuesten/websitecheck/issues"
+    "url": "https://github.com/florianbellmann/websitecheck/issues"
   },
-  "homepage": "https://github.com/florianjuesten/websitecheck#readme",
+  "homepage": "https://github.com/florianbellmann/websitecheck#readme",
   "dependencies": {
     "date-and-time": "^0.14.2",
     "dotenv": "^8.2.0",
